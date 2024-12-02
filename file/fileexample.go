@@ -26,7 +26,6 @@ func visit(path string, d fs.DirEntry, err error) error {
 }
 
 // run this program using "echo abcbcd| go run file/fileexample.go"
-// TODO: fix this code so that the subdir folder is generated and deleted
 func main() {
 	/******************************* file paths **************************************/
 

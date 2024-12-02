@@ -7,6 +7,7 @@ import (
 	"strings"
 )
 
+// go run commandline/commandlineexample.go -word=opt -numb=7 -fork -svar=flag -bar=1
 func main() {
 	// use "./command-line-arguments a b c d" to intake arguments ,note that it is best to build first
 	// os.Args is a slice of the command-line arguments, starting with the program name.
