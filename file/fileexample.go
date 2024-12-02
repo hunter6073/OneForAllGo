@@ -26,6 +26,7 @@ func visit(path string, d fs.DirEntry, err error) error {
 }
 
 // run this program using "echo abcbcd| go run file/fileexample.go"
+// TODO: fix this code so that the subdir folder is generated and deleted
 func main() {
 	/******************************* file paths **************************************/
 
@@ -109,7 +110,7 @@ func main() {
 		fmt.Println(" ", entry.Name(), entry.IsDir())
 	}
 
-	err = os.Chdir("../..") // enters subdirectory
+	err = os.Chdir("../../..") // return to original location ,allowing the successful deletion of subdir
 	check(err)
 
 	//We can also visit a directory recursively, including all its sub-directories. WalkDir accepts a callback function to handle every file or directory visited.
