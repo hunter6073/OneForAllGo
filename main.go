@@ -311,6 +311,8 @@ func main() {
 	arr[4] = 100          // setting the 5th element of the array to 100
 	fmt.Println(len(arr)) // use len() to get the length of an array
 
+	// go's arrays are values, an array variable denotes the entire array. note that it is not a pointer to the first array element like in c.
+	// this means that when you assign or pass around array value, you will make a copy of its contents.(to avoid this, use pointers to the array)
 	var arr2 = [5]int{1, 2, 3, 4, 5} // declaring an array with values
 	fmt.Println(arr2)
 
@@ -331,26 +333,40 @@ func main() {
 
 	/*********************************** slices *************************************************/
 
-	// initialize an empty slice, not the difference between a slice and an array is that a slice does not set the length at creation
-	// the difference between a slice and an array is that slices are dynamic, and can be resized
+	// initialize an empty slice, slices do not require element count
 	var slice1 []string
-	fmt.Println("uninit slice1:", slice1, "slice1==nil is: ", slice1 == nil, "len(slice1) == 0 is: ", len(slice1) == 0) // len returns the length of the slice
+	// len returns the length of the slice， cap returns the capacity of the slice
+	fmt.Println("uninit slice1:", slice1, "slice1==nil is: ", slice1 == nil, "len(slice1) is: ", len(slice1), "cap(slice1)  is: ", cap(slice1))
 
 	// using make to create an empty slice with non-zero length, other items are set to zero values, for the case of string ,they are set to ""
-	slice1 = make([]string, 3)
-	fmt.Println("made slice1:", slice1, "slice1==nil is: ", slice1 == nil, "len(slice1) == 0 is: ", len(slice1) == 0)
+	slice1 = make([]string, 3) // since capacity is not explicitly declared here, the len and cap of slice1 are both 3
+	slice1[0] = "a"            // setting an item's value in the slice
+	fmt.Println("made slice1:", slice1, "slice1==nil is: ", slice1 == nil, "len(slice1) is: ", len(slice1), "cap(slice1) is: ", cap(slice1))
 
-	slice1[0] = "a"                   // setting an item's value in the slice
-	slice1 = append(slice1, "e", "f") // append to the slice, the append operation is for slices but not arrays, this example appends two items to the slice
+	// append to the slice, the append operation is for slices but not arrays, this example appends two items to the slice
+	slice1 = append(slice1, "e") // you can also append multiple items, such as append(slice1,"e","f")
+	// now slice1 has length 4 and capacity 6, this is because append slice1 has already reached its capacity, so append will create a new copy and the new slice size and capacity is now doubled
+	fmt.Println("slice1 after appending: ", slice1, "len is: ", len(slice1), "cap is: ", cap(slice1))
+	slice1 = append(slice1, "f")
+	// slice1's capacity is still 6, because we haven't reached the capacity, so nothing happens.
+	fmt.Println("slice1 after appending: ", slice1, "len is: ", len(slice1), "cap is: ", cap(slice1))
+
+	// here we actually grew the size of the slice, note that the length of slice1 was originally 5, but now it's 6
+	// the point here is you can shrink or grow the size of the slice anywhere from 0 to the capacity, but not out of this bound
+	// if you do slice1 = sliece1[:7], this will render a panic, as you've grown the size ver the capacity
+	slice1 = slice1[:6]
+	fmt.Println("slice1 after slicing: ", slice1, "len is: ", len(slice1), "cap is: ", cap(slice1))
 
 	// copy a slice
-	copiedSlice := make([]string, len(slice1))
-	copy(copiedSlice, slice1) // copy into cs from s, operations to cs will not affect s
+	copiedSlice := make([]string, len(slice1)) // use len to get the length of the slice, use cap to get the capacity. both returns 0 for a nil slice
+	copy(copiedSlice, slice1)                  // copy into cs from s, operations to cs will not affect s, copy will return the number of elements copied
 	fmt.Println("copiedSlice is an exact copy of slice1: ", copiedSlice)
 
-	// getting a subslice
+	// slicing does not copy the slice's data, it creates a new slice value that points to the original array. modifyin the elements of a reslice will modify the original
 	sub := copiedSlice[2:5] // getting a subslice, use [2:] to begin at index 2, and [:5] to end at index 5(excluding 5)
 	fmt.Println("subslice 2:5 of copiedSlice: ", sub)
+	sub[0] = "z"
+	fmt.Println("when you change sub, copiedSlice is also changed: ", sub, copiedSlice)
 
 	slice2 := []string{"g", "h", "i"}  // initializing a slice with values
 	fmt.Println("slice2 is: ", slice2) // use slices.Equal() to compare slices
