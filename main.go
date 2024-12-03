@@ -79,6 +79,8 @@ func (r rect) perim() int { // Methods can be defined for either pointer or valu
 	return 2 * (r.width + r.height)
 }
 
+// instead of designing our abstractions in terms of what kind of data our types can hold,
+// we design our abstractions in terms of what actions our types can execute.
 type geometry interface { //If a variable has an interface type, then we can call methods that are in the named interface
 	area() float64
 	perim() float64
@@ -301,6 +303,7 @@ func main() {
 			fmt.Printf("Don't know type %T\n", t)
 		}
 	}
+	// when running this function ,the 3 input will be recognized as type interface instead of int
 	whatAmI(3) // running the function
 
 	/************************************ arrays(not that commonly used) *******************************/
@@ -628,6 +631,7 @@ func main() {
 
 	for i := range 5 {
 		if err := makeTea(i); err != nil {
+			// errors.Is compares an error to a value
 			if errors.Is(err, ErrOutOfTea) { // check to see if err is ErrOutOfTea
 				fmt.Println("We should buy new tea!")
 			} else if errors.Is(err, ErrPower) { // notice that when i=4,we returned a higher error that included ErrPower, but here it is captured
