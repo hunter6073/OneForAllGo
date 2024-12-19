@@ -414,7 +414,8 @@ func ShowTimeExample() {
 	p := fmt.Println
 	// We’ll start by getting the current time.
 	now := time.Now()
-	p(now)
+	p("time.Now is: ", now)
+	p("formatted time in Y-m-d H:i:s is: ", now.Format("2006-01-02 15:04:05"))
 	// You can build a time struct by providing the year, month, day, etc. Times are always associated with a Location, i.e. time zone.
 	then := time.Date(
 		2009, 11, 17, 20, 34, 58, 651387237, time.UTC)
@@ -477,7 +478,7 @@ func ShowTimeExample() {
 	// time since the Unix epoch in seconds, milliseconds or nanoseconds, respectively.
 	fmt.Println(now)
 	fmt.Println(now.Unix())
-	fmt.Println(now.UnixMilli())
+	fmt.Println("now.UnixMilli: ", now.UnixMilli())
 	fmt.Println(now.UnixNano())
 	// You can also convert integer seconds or nanoseconds since the epoch into the corresponding time.
 	fmt.Println(time.Unix(now.Unix(), 0))

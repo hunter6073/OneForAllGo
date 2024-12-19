@@ -523,6 +523,8 @@ func main() {
 	fmt.Println("here's a rectangle: ", rect{width: 10, height: 20, name: "rectangle1"})
 	// ommitted fields will be zero valued
 	rectangle := rect{width: 10, height: 5}
+	nr := new(rect)                                          // this is the same as nr:=&rect{0,0}
+	fmt.Println("using new to create a rectange struct", nr) // new creates a pointer to a struct, all values of the struct are zeroed
 	// will print the source code that produces the rectangle object
 	fmt.Printf("rectangle test: %#v\n", rectangle)
 	// structs are mutable
